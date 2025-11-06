@@ -1,0 +1,39 @@
+---
+import { Image } from "astro:assets";
+import type { ImageMetadata } from "astro";
+
+interface Props {
+  title: string;
+  href?: string;
+  image: ImageMetadata;
+  frame?: string | "none";
+  class?: string;
+}
+
+const { href, image, frame, title, class: className } = Astro.props;
+
+const isMailLink = href?.startsWith("mailto:");
+const hasHref = Boolean(href);
+
+---
+
+<a href={href} class:list={["group block", className]}>
+  <div
+    class="flex h-full flex-col justify-between overflow-hidden rounded-2xl border border-fg-muted bg-bg-raised shadow-sm transition-transform hover:scale-105 hover:shadow-lg dark:border-dark-fg-muted dark:bg-dark-bg-raised"
+  >
+    {
+      image && (
+        <div class="w-full overflow-hidden">
+          <Image src={image} alt={title} class="h-64 w-full object-cover" />
+        </div>
+      )
+    }
+
+    {
+      frame == "placeholder" && (
+        <div class="flex h-64 items-center justify-center bg-gradient-to-br from-brand/10 to-accent-secondary/10" />
+      )
+    }
+    </div>
+  </div>
+</a>
